@@ -1,8 +1,6 @@
 # DoubleLinkedList
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/double_linked_list`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+The missing Ruby Linked list
 
 ## Installation
 
@@ -22,7 +20,55 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+__navigation:__
+- `next`
+- `previous` or `prev`
+
+```ruby
+llist = DoubleLinkedList.from_a(1, 2, 3)
+llist.datum #=> 1
+llist.next.datum #=> 2
+llist.next.next.datum #=> 3
+llist.next.next.next #=> nil
+llist.next.next.prev.datum #=> 2
+```
+__last:__
+
+```ruby
+llist = DoubleLinkedList.from_a(1, 2, 3)
+llist.last.datum #=> 3
+```
+
+__find:___
+
+```ruby
+llist = DoubleLinkedList.from_a(1, 2, 3)
+two = llist.find(2)
+two.datum #=> 2
+two.next.datum #=> 3
+llist.find(3).datum #=> 3
+llist.find(9) #=> nil
+```
+
+__find_previous:__
+
+```ruby
+llist = DoubleLinkedList.from_a(1, 2, 3)
+llist.find_previous(3).datum #=> 2
+llist.find_previous(2).datum #=> 1
+llist.find_previous(1) #=> nil
+```
+
+__append:__
+
+```ruby
+llist = DoubleLinkedList.from_a(1, 2, 3)
+llist.append(4)
+llist.last.datum #=> 4
+llist.last.next #=> be_nil
+llist.last.previous.datum #=> 3
+```
+
 
 ## Development
 
@@ -33,4 +79,3 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/double_linked_list.
-
