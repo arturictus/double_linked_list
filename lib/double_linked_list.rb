@@ -3,7 +3,15 @@ require 'forwardable'
 class DoubleLinkedList
   extend Forwardable
   attr_accessor :head, :last
-  delegate [:datum, :next] => :head
+  delegate [
+    :datum,
+    :next,
+    :map,
+    :each,
+    # :select
+  ] => :head
+
+  delegate [ :reverse_each ] => :last
 
   def initialize(datum)
     @head = (datum.is_a?(Element) ? datum : Element.new(datum))

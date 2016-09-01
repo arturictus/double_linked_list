@@ -48,5 +48,26 @@ describe DoubleLinkedList do
       it { expect(subject.last.next).to be_nil }
       it { expect(subject.last.previous.datum).to eq 3 }
     end
+
+  end
+  describe '#reverse_each' do
+    subject do
+      data = []
+      described_class.from_a(1, 2, 3).reverse_each{ |d| data << d.datum}
+      data
+    end
+    it do
+      expect(subject).to eq [3, 2, 1]
+    end
+  end
+  describe '#each' do
+    subject do
+      data = []
+      described_class.from_a(1, 2, 3).each{ |d| data << d.datum}
+      data
+    end
+    it do
+      expect(subject).to eq [1, 2, 3]
+    end
   end
 end

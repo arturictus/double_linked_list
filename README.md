@@ -69,6 +69,36 @@ llist.last.next #=> be_nil
 llist.last.previous.datum #=> 3
 ```
 
+## Enumerable
+
+- `map`
+- `each`
+- `reverse_each`
+
+__each:__
+```ruby
+DoubleLinkedList.from_a(1, 2, 3).each { |e| puts e.datum }
+1
+2
+3
+```
+
+__map:__
+```ruby
+DoubleLinkedList.from_a(1, 2, 3).map { |e| e.datum + 1}
+=> [2, 3, 4]
+```
+
+__reverse_each:__
+```ruby
+DoubleLinkedList.from_a(1, 2, 3).reverse_each { |e| puts e.datum }
+3
+2
+1
+```
+
+
+
 
 ## Development
 
