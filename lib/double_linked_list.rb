@@ -19,8 +19,9 @@ class DoubleLinkedList
 
   class << self
     def from_a(*ary)
-      head = Element.new(ary.first)
-      last = ary.drop(1).reduce(head) do |cur_last, datum|
+      elems = ary.flatten
+      head = Element.new(elems.first)
+      last = elems.drop(1).reduce(head) do |cur_last, datum|
         cur_last.append(datum)
       end
       new(head).tap do |o|
@@ -35,21 +36,33 @@ class DoubleLinkedList
 
 
   def find(datum)
+    find_by do |elem|
+      elem == datum
+    end
+  end
+
+  def find_by(&block)
     found = nil
     head.each do |elem|
-      found = elem if elem.datum == datum
+      found = elem if block.call(elem.datum)
+      break if found
+    end
+    found
+  end
+
+  def find_previous_by(&block)
+    found = nil
+    last.reverse_each do |elem|
+      found = elem.previous if block.call(elem.datum)
       break if found
     end
     found
   end
 
   def find_previous(datum)
-    found = nil
-    last.reverse_each do |elem|
-      found = elem.previous if elem.datum == datum
-      break if found
+    find_previous_by do |elem|
+      elem == datum
     end
-    found
   end
 
   class Element < Struct.new(:datum, :previous, :_next)

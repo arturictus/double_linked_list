@@ -50,6 +50,18 @@ llist.find(3).datum #=> 3
 llist.find(9) #=> nil
 ```
 
+__find_by:__
+```ruby
+User = Struct.new(:id)
+users = [
+  User.new(id: 1),
+  User.new(id: 2),
+  User.new(id: 3)
+]
+llist = DoubleLinkedList.from_a(users)
+llist.find_by{ |elem| elem.id == 1 }.datum.id #=> 1
+```
+
 __find_previous:__
 
 ```ruby
@@ -57,6 +69,18 @@ llist = DoubleLinkedList.from_a(1, 2, 3)
 llist.find_previous(3).datum #=> 2
 llist.find_previous(2).datum #=> 1
 llist.find_previous(1) #=> nil
+```
+
+__find_previous_by:__
+```ruby
+User = Struct.new(:id)
+users = [
+  User.new(id: 1),
+  User.new(id: 2),
+  User.new(id: 3)
+]
+llist = DoubleLinkedList.from_a(users)
+llist.find_by{ |elem| elem.id == 2 }.datum.id #=> 1
 ```
 
 __append:__

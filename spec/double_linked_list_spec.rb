@@ -1,5 +1,12 @@
 require 'spec_helper'
 describe DoubleLinkedList do
+  let(:users_ary) do
+    [
+      Contextuable.new(id: 1),
+      Contextuable.new(id: 2),
+      Contextuable.new(id: 3)
+    ]
+  end
   describe 'initial state' do
     subject { described_class.new(:head) }
     it { expect(subject.head.datum).to eq :head }
@@ -17,9 +24,20 @@ describe DoubleLinkedList do
     it { expect(subject.next.next.next).to be_nil }
 
     describe '#find' do
-      it { expect(subject.find(2).datum).to eq 2 }
-      it { expect(subject.find(3).datum).to eq 3 }
-      it { expect(subject.find(9)).to be_nil }
+        it { expect(subject.find(2).datum).to eq 2 }
+        it { expect(subject.find(3).datum).to eq 3 }
+        it { expect(subject.find(9)).to be_nil }
+    end
+    describe '#find_by' do
+      it { expect(subject.find_by{ |elem| elem == 2 }.datum).to eq 2 }
+      it { expect(subject.find_by{ |elem| elem == 3 }.datum).to eq 3 }
+      it { expect(subject.find_by{ |elem| elem == 9 }).to be_nil }
+      context 'complex elements' do
+        subject { described_class.from_a(users_ary) }
+        it { expect(subject.find_by{ |elem| elem.id == 3 }.datum.id).to eq 3 }
+        it { expect(subject.find_by{ |elem| elem.id == 2 }.datum.id).to eq 2 }
+        it { expect(subject.find_by{ |elem| elem.id == 4 }).to be_nil }
+      end
     end
 
     describe '#last' do
@@ -30,6 +48,19 @@ describe DoubleLinkedList do
       it { expect(subject.find_previous(3).datum).to eq 2 }
       it { expect(subject.find_previous(2).datum).to eq 1 }
       it { expect(subject.find_previous(1)).to be_nil }
+    end
+    describe '#find_previous_by' do
+      context 'pure elements' do
+        it { expect(subject.find_previous_by{ |elem| elem == 3 }.datum).to eq 2 }
+        it { expect(subject.find_previous_by{ |elem| elem == 2 }.datum).to eq 1 }
+        it { expect(subject.find_previous_by{ |elem| elem == 1 }).to be_nil }
+      end
+      context 'complex elements' do
+        subject { described_class.from_a(users_ary) }
+        it { expect(subject.find_previous_by{ |elem| elem.id == 3 }.datum.id).to eq 2 }
+        it { expect(subject.find_previous_by{ |elem| elem.id == 2 }.datum.id).to eq 1 }
+        it { expect(subject.find_previous_by{ |elem| elem.id == 1 }).to be_nil }
+      end
     end
     describe '#previous' do
       it { expect(subject.find(3).previous.datum).to eq 2 }
