@@ -8,7 +8,7 @@ class DoubleLinkedList
     :next,
     :map,
     :each,
-    # :select
+    :reduce,
   ] => :head
 
   delegate [ :reverse_each ] => :last
@@ -65,6 +65,16 @@ class DoubleLinkedList
     end
   end
 
+  def chunk_by(&block)
+    head.chunk_by([], &block)
+  end
+
+  def to_a
+    [].tap do |ary|
+      each{ |elem| ary << elem.datum }
+    end
+  end
+
   class Element < Struct.new(:datum, :previous, :_next)
     include Enumerable
     alias_method :next, :_next
@@ -75,11 +85,45 @@ class DoubleLinkedList
       _next.each(&block) if _next
     end
 
-    def each_from_last(&block)
-      block.call self
-      previous.each_from_last(&block) if previous
+    def chunk_by(acc, &block)
+      if acc.empty?
+        acc << [self.datum]
+      else
+        if block.call(self.prev)
+          acc << [self.datum]
+        else
+          acc.last << self.datum
+        end
+      end
+      if _next
+        _next.chunk_by(acc, &block)
+      else
+        acc.map{ |ary| DoubleLinkedList.from_a(ary)}
+      end
     end
-    alias_method :reverse_each, :each_from_last
+
+    def find_previous_by(&block)
+      found = nil
+      reverse_each do |elem|
+        found = elem if block.call(elem)
+        break if found
+      end
+      found
+    end
+
+    def find_next_by(&block)
+      found = nil
+      each do |elem|
+        found = elem if block.call(elem)
+        break if found
+      end
+      found
+    end
+
+    def reverse_each(&block)
+      block.call self
+      previous.reverse_each(&block) if previous
+    end
 
     def append(datum)
       new_last = Element.new(datum, self, nil)
