@@ -18,11 +18,11 @@ describe 'Group by Trip' do
   end
   subject { DoubleLinkedList.from_a(go_and_return_to_madrid, go_and_return_to_rio) }
   it 'finding barcelona Madrid trip' do
-    out = subject.chunk_by do |elem|
+    out = subject.chunk_by do |elem, current_llist|
       datum = elem.datum
       case datum.type
       when 'Flight'
-        elem.find_previous_by do |prev_elem|
+        current_llist.find_previous_by do |prev_elem|
           if prev_elem.datum.type == 'Flight'
             elem.datum.destination == prev_elem.datum.origin
           end

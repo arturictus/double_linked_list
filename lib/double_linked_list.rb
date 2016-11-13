@@ -9,9 +9,13 @@ class DoubleLinkedList
     :map,
     :each,
     :reduce,
+    # :find_next_by
   ] => :head
 
-  delegate [ :reverse_each ] => :last
+  delegate [
+    :reverse_each,
+    # :find_previous_by
+  ] => :last
 
   def initialize(datum)
     @head = (datum.is_a?(Element) ? datum : Element.new(datum))
@@ -34,6 +38,9 @@ class DoubleLinkedList
     self.last = last.append(datum)
   end
 
+  def <<(datum)
+    append(datum)
+  end
 
   def find(datum)
     find_by do |elem|
@@ -87,10 +94,10 @@ class DoubleLinkedList
 
     def chunk_by(acc, &block)
       if acc.empty?
-        acc << [self.datum]
+        acc << DoubleLinkedList.from_a(self.datum)
       else
-        if block.call(self.prev)
-          acc << [self.datum]
+        if block.call(self.prev, acc.last)
+          acc << DoubleLinkedList.from_a(self.datum)
         else
           acc.last << self.datum
         end
@@ -98,7 +105,7 @@ class DoubleLinkedList
       if _next
         _next.chunk_by(acc, &block)
       else
-        acc.map{ |ary| DoubleLinkedList.from_a(ary)}
+        acc
       end
     end
 
