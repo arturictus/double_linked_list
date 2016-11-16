@@ -22,6 +22,19 @@ class DoubleLinkedList
       _next ? _next.chunk_by(acc, &block) : acc
     end
 
+    def select_by(acc, &block)
+      if acc.empty?
+        acc << DoubleLinkedList.from_a(self.datum)
+      else
+        if block.call(self, acc.last, acc)
+          acc << DoubleLinkedList.from_a(self.datum)
+        else
+          acc.last << self.datum
+        end
+      end
+      _next ? _next.select_by(acc, &block) : acc
+    end
+
     def find_previous_by(&block)
       _finder(:reverse_each, &block)
     end

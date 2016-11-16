@@ -61,6 +61,10 @@ class DoubleLinkedList
     head.chunk_by([], &block)
   end
 
+  def select_by(&block)
+    head.select_by([], &block)
+  end
+
   def to_a
     [].tap do |ary|
       each{ |elem| ary << elem.datum }

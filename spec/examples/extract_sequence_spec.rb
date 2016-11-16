@@ -1,8 +1,8 @@
-require 'double_linked_list'
+require 'spec_helper'
 require 'contextuable'
-require File.expand_path('group_trips', __dir__)
+require File.expand_path('extract_sequence', __dir__)
 
-describe 'Chunk by Example' do
+describe 'Extract Sequence' do
   let(:go_and_return_to_madrid) do
     [
       Contextuable.new(id: 1, origin: 'Barcelona', destination: 'Madrid', type: 'Flight'),
@@ -43,11 +43,12 @@ describe 'Chunk by Example' do
                    missing_initial
     DoubleLinkedList.from_a(collection)
   end
+
   let(:chunker) do
     GroupTrips.new(llist)
   end
   context 'when we have user home' do
-    subject { chunker.chunk('Barcelona') }
+    subject { chunker.extract_sequences('Barcelona') }
     it 'finds barcelona Madrid trip' do
       expect(subject.first.to_a).to eq go_and_return_to_madrid
     end
@@ -61,5 +62,4 @@ describe 'Chunk by Example' do
       expect(subject[3].to_a).to eq missing_initial
     end
   end
-
 end
