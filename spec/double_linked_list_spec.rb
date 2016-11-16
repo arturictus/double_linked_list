@@ -29,14 +29,26 @@ describe DoubleLinkedList do
         it { expect(subject.find(9)).to be_nil }
     end
     describe '#find_by' do
-      it { expect(subject.find_by{ |elem| elem == 2 }.datum).to eq 2 }
-      it { expect(subject.find_by{ |elem| elem == 3 }.datum).to eq 3 }
-      it { expect(subject.find_by{ |elem| elem == 9 }).to be_nil }
+      it { expect(subject.find_by{ |elem| elem.datum == 2 }.datum).to eq 2 }
+      it { expect(subject.find_by{ |elem| elem.datum == 3 }.datum).to eq 3 }
+      it { expect(subject.find_by{ |elem| elem.datum == 9 }).to be_nil }
       context 'complex elements' do
         subject { described_class.from_a(users_ary) }
-        it { expect(subject.find_by{ |elem| elem.id == 3 }.datum.id).to eq 3 }
-        it { expect(subject.find_by{ |elem| elem.id == 2 }.datum.id).to eq 2 }
-        it { expect(subject.find_by{ |elem| elem.id == 4 }).to be_nil }
+        it { expect(subject.find_by{ |elem| elem.datum.id == 3 }.datum.id).to eq 3 }
+        it { expect(subject.find_by{ |elem| elem.datum.id == 2 }.datum.id).to eq 2 }
+        it { expect(subject.find_by{ |elem| elem.datum.id == 4 }).to be_nil }
+      end
+    end
+    describe '#reverse_find' do
+      it { expect(subject.reverse_find(2).datum).to eq 2 }
+      it { expect(subject.reverse_find(9)).to be_nil }
+    end
+    describe '#reverse_find_by' do
+      it { expect(subject.reverse_find_by{ |elem| elem.datum == 2 }.datum).to eq 2 }
+      it { expect(subject.reverse_find_by{ |elem| elem.datum == 9 }).to be_nil }
+      context 'complex elements' do
+        subject { described_class.from_a(users_ary) }
+        it { expect(subject.reverse_find_by{ |elem| elem.datum.id == 3 }.datum.id).to eq 3 }
       end
     end
 
@@ -44,24 +56,6 @@ describe DoubleLinkedList do
       it { expect(subject.last).to eq subject.find(3) }
     end
 
-    describe '#find_previous' do
-      it { expect(subject.find_previous(3).datum).to eq 2 }
-      it { expect(subject.find_previous(2).datum).to eq 1 }
-      it { expect(subject.find_previous(1)).to be_nil }
-    end
-    describe '#find_previous_by' do
-      context 'pure elements' do
-        it { expect(subject.find_previous_by{ |elem| elem == 3 }.datum).to eq 2 }
-        it { expect(subject.find_previous_by{ |elem| elem == 2 }.datum).to eq 1 }
-        it { expect(subject.find_previous_by{ |elem| elem == 1 }).to be_nil }
-      end
-      context 'complex elements' do
-        subject { described_class.from_a(users_ary) }
-        it { expect(subject.find_previous_by{ |elem| elem.id == 3 }.datum.id).to eq 2 }
-        it { expect(subject.find_previous_by{ |elem| elem.id == 2 }.datum.id).to eq 1 }
-        it { expect(subject.find_previous_by{ |elem| elem.id == 1 }).to be_nil }
-      end
-    end
     describe '#previous' do
       it { expect(subject.find(3).previous.datum).to eq 2 }
       it { expect(subject.find(2).previous.datum).to eq 1 }

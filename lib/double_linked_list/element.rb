@@ -23,21 +23,11 @@ class DoubleLinkedList
     end
 
     def find_previous_by(&block)
-      found = nil
-      reverse_each do |elem|
-        found = elem if block.call(elem)
-        break if found
-      end
-      found
+      _finder(:reverse_each, &block)
     end
 
     def find_next_by(&block)
-      found = nil
-      each do |elem|
-        found = elem if block.call(elem)
-        break if found
-      end
-      found
+      _finder(:each, &block)
     end
 
     def reverse_each(&block)
@@ -49,6 +39,17 @@ class DoubleLinkedList
       new_last = Element.new(datum, self, nil)
       self._next = new_last
       new_last
+    end
+
+    private
+
+    def _finder(direction, &block)
+      found = nil
+      send(direction) do |elem|
+        found = elem if block.call(elem)
+        break if found
+      end
+      found
     end
   end
 end

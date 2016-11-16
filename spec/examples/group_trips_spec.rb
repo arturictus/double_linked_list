@@ -1,5 +1,6 @@
 require 'double_linked_list'
 require 'contextuable'
+require File.expand_path('group_trips', __dir__)
 
 describe 'Group by Trip' do
   let(:go_and_return_to_madrid) do
@@ -25,31 +26,40 @@ describe 'Group by Trip' do
       Contextuable.new(id: 11, origin: 'Madrid', destination: 'Barcelona', type: 'Flight')
     ]
   end
+
+  let(:missing_initial) do
+    [
+      # Contextuable.new(id: 12, origin: 'Barcelona', destination: 'Madrid', type: 'Flight'),
+      Contextuable.new(id: 13, origin: 'Madrid', destination: 'Rio', type: 'Flight'),
+      Contextuable.new(id: 14, city: 'Rio', type: 'Hotel'),
+      Contextuable.new(id: 15, origin: 'Rio', destination: 'Madrid', type: 'Flight'),
+      Contextuable.new(id: 16, origin: 'Madrid', destination: 'Barcelona', type: 'Flight')
+    ]
+  end
   let(:llist) do
-    collection = go_and_return_to_madrid + go_and_return_to_rio + scales
+    collection = go_and_return_to_madrid +
+                   go_and_return_to_rio +
+                   scales +
+                   missing_initial
     DoubleLinkedList.from_a(collection)
   end
-  subject do
-    llist.chunk_by do |elem, current_llist, acc|
-      datum = elem.datum
-      # prev = elem.prev.try(:datum)
-      # _next = elem.next.datum
-      current_head = current_llist.head.datum
-      case datum.type
-      when 'Flight'
-        datum.origin == 'Barcelona' #|| (elem.prev && elem.prev.datum.type == 'Flight' && elem.prev.datum.destination == 'Barcelona') || (current_head.origin == datum.destination)
-      when 'Hotel'
-      end
+  let(:chunker) do
+    GroupTrips.new(llist)
+  end
+  context 'when we have user home' do
+    subject { chunker.chunk('Barcelona') }
+    it 'finds barcelona Madrid trip' do
+      expect(subject.first.to_a).to eq go_and_return_to_madrid
     end
-  end
-  it 'finds barcelona Madrid trip' do
-    expect(subject.first.to_a).to eq go_and_return_to_madrid
-  end
-  it 'finds barcelona Rio trip' do
-    expect(subject[1].to_a).to eq go_and_return_to_rio
-  end
-  it 'finds scales' do
-    expect(subject[2].to_a).to eq scales
+    it 'finds barcelona Rio trip' do
+      expect(subject[1].to_a).to eq go_and_return_to_rio
+    end
+    it 'finds scales' do
+      expect(subject[2].to_a).to eq scales
+    end
+    it 'finds missing_initial' do
+      expect(subject[3].to_a).to eq missing_initial
+    end
   end
 
 end

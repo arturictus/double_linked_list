@@ -9,12 +9,10 @@ class DoubleLinkedList
     :map,
     :each,
     :reduce,
-    # :find_next_by
   ] => :head
 
   delegate [
     :reverse_each,
-    # :find_previous_by
   ] => :last
 
   def initialize(datum)
@@ -37,39 +35,26 @@ class DoubleLinkedList
   def append(datum)
     self.last = last.append(datum)
   end
-
-  def <<(datum)
-    append(datum)
-  end
+  alias_method :<<, :append
 
   def find(datum)
     find_by do |elem|
-      elem == datum
+      elem.datum == datum
     end
   end
 
   def find_by(&block)
-    found = nil
-    head.each do |elem|
-      found = elem if block.call(elem.datum)
-      break if found
-    end
-    found
+    head.find_next_by(&block)
   end
 
-  def find_previous_by(&block)
-    found = nil
-    last.reverse_each do |elem|
-      found = elem.previous if block.call(elem.datum)
-      break if found
+  def reverse_find(datum)
+    reverse_find_by do |elem|
+      elem.datum == datum
     end
-    found
   end
 
-  def find_previous(datum)
-    find_previous_by do |elem|
-      elem == datum
-    end
+  def reverse_find_by(&block)
+    last.find_previous_by(&block)
   end
 
   def chunk_by(&block)
