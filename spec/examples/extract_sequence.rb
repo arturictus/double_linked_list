@@ -10,10 +10,10 @@ class GroupTrips
   end
 
   def output(traveller_home)
-    @output ||= llist.select_by do |elem, current_llist, acc|
+    @output ||= llist.select_by do |elem|
                   case elem.datum.type
                   when 'Flight'
-                    Flight.new(elem, current_llist, acc).head_and_last(traveller_home)
+                    Flight.new(elem, nil, nil).head_and_last(traveller_home)
                   when 'Hotel'
                   end
                 end
@@ -22,8 +22,8 @@ class GroupTrips
 
   class Flight
     attr_reader :elem,
-                :current_llist,
-                :acc,
+                # :current_llist,
+                # :acc,
                 :datum,
                 :home
 
@@ -35,39 +35,37 @@ class GroupTrips
 
     end
 
-    def chunk?(home)
-      @home = home
-      [
-        :is_origin_home?,
-        :is_prev_dest_home?,
-        # :current_llist_is_closed?
-      ].any?{ |method| self.send(method) }
-    end
-
     def head_and_last(home)
-      if chunk?(home)
-        { head: current_head, last: elem }
+      palindromes
+      # if datum.id == 3
+      #   head = elem.find_previous_by do |e|
+      #     e.datum.id == 1
+      #   end
+      #   { head: head.datum, last: elem.datum }
+      # end
+    end
+
+    def palindromes
+      found = nil
+      elem.each do |e|
+        if is_flight?(e) && go_and_return?(e)
+          found = { head: elem, last: e }
+        end
+        break if found
       end
-    end
-
-    def is_origin_home?
-      datum.origin == home
-    end
-
-    def is_prev_dest_home?
-      prev &&
-        prev.datum.type == 'Flight' &&
-        prev.datum.destination == home
-    end
-
-    def current_llist_is_closed?
-      prev &&
-        current_head.type == 'Flight' &&
-        prev.datum.type == 'Flight' &&
-        current_head.origin == prev.datum.destination
+      found
     end
 
     private
+
+    def go_and_return?(element)
+      return unless is_flight?(element)
+      element.datum.destination == datum.origin
+    end
+
+    def is_flight?(element)
+      element.datum.type == 'Flight'
+    end
 
     def current_head
       current_llist.head.datum

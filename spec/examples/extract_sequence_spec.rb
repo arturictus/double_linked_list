@@ -29,7 +29,7 @@ describe 'Extract Sequence' do
 
   let(:missing_initial) do
     [
-      # Contextuable.new(id: 12, origin: 'Barcelona', destination: 'Madrid', type: 'Flight'),
+      Contextuable.new(id: 12, origin: 'Barcelona', destination: 'Madrid', type: 'Flight'),
       Contextuable.new(id: 13, origin: 'Madrid', destination: 'Rio', type: 'Flight'),
       Contextuable.new(id: 14, city: 'Rio', type: 'Hotel'),
       Contextuable.new(id: 15, origin: 'Rio', destination: 'Madrid', type: 'Flight'),
