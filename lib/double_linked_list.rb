@@ -74,3 +74,4 @@ class DoubleLinkedList
 end
 
 require 'double_linked_list/element'
+require 'double_linked_list/sequence'

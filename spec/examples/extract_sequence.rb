@@ -49,7 +49,7 @@ class GroupTrips
       found = nil
       elem.each do |e|
         if is_flight?(e) && go_and_return?(e)
-          found = { head: elem, last: e }
+          found = DoubleLinkedList::Sequence.new(head: elem, last: e)
         end
         break if found
       end
