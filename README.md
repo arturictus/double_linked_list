@@ -1,5 +1,11 @@
 # DoubleLinkedList
 
+[![Build Status](https://travis-ci.org/arturictus/double_linked_list.svg?branch=master)](https://travis-ci.org/arturictus/double_linked_list)
+[![Gem Version](https://badge.fury.io/rb/double_linked_list.svg)](https://badge.fury.io/rb/double_linked_list)
+[![Code Climate](https://codeclimate.com/github/arturictus/double_linked_list/badges/gpa.svg)](https://codeclimate.com/github/arturictus/double_linked_list)
+[![Test Coverage](https://codeclimate.com/github/arturictus/double_linked_list/badges/coverage.svg)](https://codeclimate.com/github/arturictus/double_linked_list/coverage)
+[![Issue Count](https://codeclimate.com/github/arturictus/double_linked_list/badges/issue_count.svg)](https://codeclimate.com/github/arturictus/double_linked_list)
+
 The missing Ruby Linked list
 
 ## Installation
@@ -39,7 +45,7 @@ llist = DoubleLinkedList.from_a(1, 2, 3)
 llist.last.datum #=> 3
 ```
 
-__find:___
+__find:__
 
 ```ruby
 llist = DoubleLinkedList.from_a(1, 2, 3)
@@ -60,18 +66,6 @@ users = [
 ]
 llist = DoubleLinkedList.from_a(users)
 llist.find_by{ |elem| elem.datum.id == 1 }.datum.id #=> 1
-```
-
-__find_by:__
-```ruby
-User = Struct.new(:id)
-users = [
-  User.new(1),
-  User.new(2),
-  User.new(3)
-]
-llist = DoubleLinkedList.from_a(users)
-llist.find_by{ |elem| elem.datum.id == 2 }.datum.id #=> 2
 ```
 
 __append:__
@@ -145,8 +139,6 @@ select.is_a? Array #=> true
 select.first.is_a? DoubleLinkedList #=> true
 select.map{|ll| ll.to_a } #=> [[2, 3]]
 ```
-
-
 
 ## Development
 
