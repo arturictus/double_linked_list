@@ -26,7 +26,7 @@ describe DoubleLinkedList::Element do
     expect(three.datum).to eq(3)
   end
   it '#find' do
-    expect(list.head.find(1).datum).to eq 1
+    expect(list.head.find(2).datum).to eq 2
   end
 
   it 'chunk_by' do
@@ -40,7 +40,7 @@ describe DoubleLinkedList::Element do
   end
 
   it 'select_by' do
-    select = list.head.select_by([]) do |e|
+    select = list.head.select_by do |e|
       if e.datum == 2 && e.next.datum == 3
         DoubleLinkedList::Sequence.new(head: e, last: e.next)
       end

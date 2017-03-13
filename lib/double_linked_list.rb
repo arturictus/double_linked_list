@@ -44,7 +44,7 @@ class DoubleLinkedList
   end
 
   def find_by(&block)
-    head.find_next_by(&block)
+    head.find_next_by(false, &block)
   end
 
   def reverse_find(datum)
@@ -54,7 +54,7 @@ class DoubleLinkedList
   end
 
   def reverse_find_by(&block)
-    last.find_previous_by(&block)
+    last.find_previous_by(false, &block)
   end
 
   def chunk_by(&block)
@@ -62,7 +62,7 @@ class DoubleLinkedList
   end
 
   def select_by(&block)
-    head.select_by([], &block)
+    head.select_by(&block)
   end
 
   def to_a

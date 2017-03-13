@@ -9,18 +9,31 @@ class DoubleLinkedList
       _next.each(&block) if _next
     end
 
+    # Avoid calling myself on finds
+    def _each(&block)
+      _next.each(&block) if _next
+    end
+
     def find(datum)
       find_next_by do |elem|
         elem.datum == datum
       end
     end
 
-    def find_previous_by(&block)
-      _finder(:reverse_each, &block)
+    def find_previous_by(exclude_self = true, &block)
+      method = exclude_self ? :_reverse_each : :reverse_each
+      _finder(method, &block)
     end
 
-    def find_next_by(&block)
-      _finder(:each, &block)
+    def find_next_by(exclude_self = true, &block)
+      method = exclude_self ? :_each : :each
+      _finder(method, &block)
+    end
+
+    # This is done to avoid calling self in the block
+    # For not finding myself as the first element in the list
+    def _reverse_each(&block)
+      previous.reverse_each(&block) if previous
     end
 
     def reverse_each(&block)
@@ -47,7 +60,7 @@ class DoubleLinkedList
       _next ? _next.chunk_by(acc, &block) : acc
     end
 
-    def select_by(acc, &block)
+    def select_by(&block)
       sequences = []
       find_multiple do |e|
         head_tail = block.call(e)
