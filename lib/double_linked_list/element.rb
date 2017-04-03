@@ -1,6 +1,7 @@
 class DoubleLinkedList
   class Element < Struct.new(:datum, :previous, :_next)
     include Enumerable
+
     alias_method :next, :_next
     alias_method :prev, :previous
 
@@ -12,6 +13,27 @@ class DoubleLinkedList
     # Avoid calling myself on finds
     def _each(&block)
       _next.each(&block) if _next
+    end
+
+    def count
+      reduce(0) { |p, n| p + 1 }
+    end
+    alias_method :included_next_count, :count
+
+    def next_count
+      c = 0
+      _each { |n| c += 1 }
+      c
+    end
+
+    def prev_count
+      c = 0
+      _reverse_each { |n| c += 1 }
+      c
+    end
+
+    def included_prev_count
+      prev_count + 1
     end
 
     def find(datum)

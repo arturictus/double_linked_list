@@ -49,4 +49,25 @@ describe DoubleLinkedList::Element do
     expect(select.first).to be_a DoubleLinkedList
     expect(select.first.to_a).to eq [2, 3]
   end
+
+  it 'count' do
+    expect(list.head.count).to eq 4
+  end
+
+  it 'next_count' do
+    expect(list.head.next_count).to eq 3
+    expect(list.next.next_count).to eq 2
+  end
+
+  it 'prev_count' do
+    expect(list.head.prev_count).to eq 0
+    expect(list.next.prev_count).to eq 1
+    expect(list.last.prev_count).to eq 3
+  end
+
+  it 'included_prev_count' do
+    expect(list.head.included_prev_count).to eq 1
+    expect(list.next.included_prev_count).to eq 2
+    expect(list.last.included_prev_count).to eq 4
+  end
 end

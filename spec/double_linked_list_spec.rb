@@ -99,5 +99,9 @@ describe DoubleLinkedList do
       expect(select.first.to_a).to eq [2, 3]
     end
 
+    it 'count' do
+      expect(subject.count).to eq 3
+    end
+
   end
 end
