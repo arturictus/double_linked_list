@@ -123,6 +123,18 @@ chunked.first.last.datum #=> 2
 chunked.map{|ll| ll.to_a } #=> [[1, 2], [3, 4]]
 ```
 
+A custom dll can be provided to enhance dll outputs
+
+```ruby
+class CustomDLL < DoubleLinkedList; end
+
+llist = DoubleLinkedList.from_a(1, 2, 3, 4)
+chunked = llist.chunk_by do |e, current_llist|
+  e.datum == 3 && current_llist.head.datum == 1
+end
+chunked.first.is_a? CustomDLL #=> true
+```
+
 __select_by:__
 
 For selecting fractions of the linked list avoiding the elements not returned in between the selected head and last sequences.

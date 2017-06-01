@@ -1,6 +1,15 @@
 class DoubleLinkedList
-  class Element < Struct.new(:datum, :previous, :_next)
+  class Element
     include Enumerable
+
+    attr_reader :datum
+    attr_accessor :previous, :_next
+
+    def initialize(datum, previous = nil, _next = nil)
+      @datum = datum
+      @previous = previous
+      @_next = _next
+    end
 
     alias_method :next, :_next
     alias_method :prev, :previous
@@ -16,19 +25,19 @@ class DoubleLinkedList
     end
 
     def count
-      reduce(0) { |p, n| p + 1 }
+      reduce(0) { |p| p + 1 }
     end
     alias_method :included_next_count, :count
 
     def next_count
       c = 0
-      _each { |n| c += 1 }
+      _each { c += 1 }
       c
     end
 
     def prev_count
       c = 0
-      _reverse_each { |n| c += 1 }
+      _reverse_each { c += 1 }
       c
     end
 
@@ -69,12 +78,12 @@ class DoubleLinkedList
       new_last
     end
 
-    def chunk_by(acc, &block)
+    def chunk_by(acc, custom_dll = DoubleLinkedList, &block)
       if acc.empty?
-        acc << DoubleLinkedList.from_a(self.datum)
+        acc << custom_dll.from_a(self.datum)
       else
         if block.call(self, acc.last, acc)
-          acc << DoubleLinkedList.from_a(self.datum)
+          acc << custom_dll.from_a(self.datum)
         else
           acc.last << self.datum
         end

@@ -7,6 +7,9 @@ describe DoubleLinkedList do
       Contextuable.new(id: 3)
     ]
   end
+
+  class CustomDLL < DoubleLinkedList; end
+
   describe 'initial state' do
     subject { described_class.new(:head) }
     it { expect(subject.head.datum).to eq :head }
@@ -84,6 +87,16 @@ describe DoubleLinkedList do
       end
       expect(chunked.count).to eq 2
       expect(chunked.first).to be_a DoubleLinkedList
+      expect(chunked.first.to_a).to eq [1, 2]
+      expect(chunked.last.to_a).to eq [3]
+    end
+
+    it 'chunk_by with custom dll' do
+      chunked = subject.chunk_by(CustomDLL) do |e, current_llist|
+        e.datum == 3 && current_llist.head.datum == 1
+      end
+      expect(chunked.count).to eq 2
+      expect(chunked.first).to be_a CustomDLL
       expect(chunked.first.to_a).to eq [1, 2]
       expect(chunked.last.to_a).to eq [3]
     end
