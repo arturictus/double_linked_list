@@ -96,7 +96,7 @@ describe DoubleLinkedList do
         e.datum == 3 && current_llist.head.datum == 1
       end
       expect(chunked.count).to eq 2
-      expect(chunked.first).to be_a CustomDLL
+      expect(chunked.all?{|e| e.is_a?(CustomDLL)}).to be true
       expect(chunked.first.to_a).to eq [1, 2]
       expect(chunked.last.to_a).to eq [3]
     end

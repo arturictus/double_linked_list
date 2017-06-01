@@ -88,7 +88,7 @@ class DoubleLinkedList
           acc.last << self.datum
         end
       end
-      _next ? _next.chunk_by(acc, &block) : acc
+      _next ? _next.chunk_by(acc, custom_dll, &block) : acc
     end
 
     def select_by(&block)
