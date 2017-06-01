@@ -103,6 +103,18 @@ class DoubleLinkedList
       extract_sequences(sequences)
     end
 
+    def method_missing(method, *args, &block)
+      if datum.respond_to?(method)
+        datum.send(method, *args, &block)
+      else
+        super
+      end
+    end
+
+    def respond_to_missing?(method_name, include_private = false)
+      datum.respond_to?(method_name) ? true : false
+    end
+
     protected
 
     def find_multiple(&block)

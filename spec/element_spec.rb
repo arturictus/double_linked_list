@@ -70,4 +70,23 @@ describe DoubleLinkedList::Element do
     expect(list.next.included_prev_count).to eq 2
     expect(list.last.included_prev_count).to eq 4
   end
+
+  describe 'Auto delegate missing methods to datum' do
+    class DatumExample
+      def hello
+        true
+      end
+    end
+    it 'linked list with a Hellos' do
+      dll = DoubleLinkedList.from_a(DatumExample.new, DatumExample.new, DatumExample.new, DatumExample.new)
+      expect {
+        dll.head.hello
+        dll.next.prev.hello
+        dll.last.hello
+      }.not_to raise_error
+
+      expect(dll.all?{ |e| e.respond_to? :hello }).to be true
+      expect(dll.all?{ |e| e.respond_to? :no_way }).to be false
+    end
+  end
 end

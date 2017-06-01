@@ -9,7 +9,9 @@ class DoubleLinkedList
     :map,
     :each,
     :reduce,
-    :count
+    :count,
+    :all?,
+    :any?
   ] => :head
 
   delegate [
