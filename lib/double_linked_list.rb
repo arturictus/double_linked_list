@@ -58,8 +58,8 @@ class DoubleLinkedList
     last.find_previous_by(false, &block)
   end
 
-  def chunk_by(&block)
-    head.chunk_by([], &block)
+  def chunk_by(custom_dll = DoubleLinkedList, &block)
+    head.chunk_by([], custom_dll, &block)
   end
 
   def select_by(&block)
