@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{The missing Ruby Double Linked List}
   spec.description   = %q{The missing Ruby Double Linked List.}
   spec.homepage      = "https://github.com/arturictus/double_linked_list"
+  spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
