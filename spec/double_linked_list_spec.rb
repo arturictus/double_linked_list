@@ -81,6 +81,10 @@ describe DoubleLinkedList do
       it { expect(subject.to_a).to eq [1, 2, 3]}
     end
 
+    describe '#[]' do
+      it { expect(subject[2]).to eq(3) }
+    end
+
     it 'chunk_by' do
       chunked = subject.chunk_by do |e, current_llist|
         e.datum == 3 && current_llist.head.datum == 1

@@ -16,6 +16,10 @@ class DoubleLinkedList
     :reverse_each,
   ] => :last
 
+  delegate [
+    :[]
+  ] => :to_a
+
   def initialize(datum)
     @head = (datum.is_a?(Element) ? datum : Element.new(datum))
   end
