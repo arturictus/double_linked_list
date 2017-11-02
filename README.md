@@ -38,6 +38,21 @@ llist.next.next.datum #=> 3
 llist.next.next.next #=> nil
 llist.next.next.prev.datum #=> 2
 ```
+
+Elements in the list delegate methods to datum
+
+```ruby
+class DatumExample
+  def hello
+    true
+  end
+end
+dll = DoubleLinkedList.from_a(DatumExample.new, DatumExample.new, DatumExample.new, DatumExample.new)
+dll.head.hello # => true
+dll.next.prev.hello # => true
+dll.last.hello # => true
+dll.last.next.hello # => NoMethodError: undefined method `hello' for nil:NilClass
+```
 __last:__
 
 ```ruby
