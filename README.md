@@ -80,7 +80,7 @@ users = [
   User.new(3)
 ]
 llist = DoubleLinkedList.from_a(users)
-llist.find_by{ |elem| elem.datum.id == 1 }.datum.id #=> 1
+llist.find_by{ |elem| elem.id == 1 }.id #=> 1
 ```
 
 __append:__
@@ -130,8 +130,8 @@ The first element of the splitted array are the elememts that return true in the
 ```ruby
 llist = DoubleLinkedList.from_a(1, 2, 3, 4)
 chunked = llist.chunk_by do |e, current_llist|
-  e.datum == 3 && current_llist.head.datum == 1
-end
+            e.datum == 3 && current_llist.head.datum == 1
+          end
 chunked.first.is_a? DoubleLinkedList #=> true
 chunked.first.head.datum #=> 1
 chunked.first.last.datum #=> 2
@@ -144,10 +144,10 @@ A custom dll can be provided to enhance dll outputs
 class CustomDLL < DoubleLinkedList; end
 
 llist = DoubleLinkedList.from_a(1, 2, 3, 4)
-chunked = llist.chunk_by do |e, current_llist|
-  e.datum == 3 && current_llist.head.datum == 1
-end
-chunked.first.is_a? CustomDLL #=> true
+chunked = llist.chunk_by(CustomDLL) do |e, current_llist|
+            e.datum == 3 && current_llist.head.datum == 1
+          end
+chunked.first.is_a?(CustomDLL) #=> true
 ```
 
 __select_by:__
@@ -158,10 +158,10 @@ In the block must be returned a `DoubleLinkedList::Sequence` instance and head a
 ```ruby
 llist = DoubleLinkedList.from_a(1, 2, 3, 4)
 select = llist.select_by do |e|
-  if e.datum == 2 && e.next.datum == 3
-    DoubleLinkedList::Sequence.new(head: e, last: e.next)
-  end
-end
+           if e.datum == 2 && e.next.datum == 3
+             DoubleLinkedList::Sequence.new(head: e, last: e.next)
+           end
+         end
 select.is_a? Array #=> true
 select.first.is_a? DoubleLinkedList #=> true
 select.map{|ll| ll.to_a } #=> [[2, 3]]
@@ -169,7 +169,7 @@ select.map{|ll| ll.to_a } #=> [[2, 3]]
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake false ---` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `bundle exec rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. [rubygems.org](https://rubygems.org).
 
