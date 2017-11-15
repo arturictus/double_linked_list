@@ -104,11 +104,7 @@ class DoubleLinkedList
     end
 
     def method_missing(method, *args, &block)
-      if datum.respond_to?(method)
-        datum.send(method, *args, &block)
-      else
-        super
-      end
+      datum.send(method, *args, &block)
     end
 
     def respond_to_missing?(method_name, include_private = false)
